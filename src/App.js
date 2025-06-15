@@ -1,36 +1,40 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Switch, Route, useHistory } from "react-router-dom";
 import Board from "./Components/Board/Board";
+import Home from "./Home";
 import "./App.css";
-import Editable from "./Components/Editabled/Editable";
 
-export default function App() {
+function KanbanApp() {
   const [boards, setBoards] = useState(
-    JSON.parse(localStorage.getItem("prac-kanban")) || []
+    JSON.parse(localStorage.getItem("prac-kanban")) || [
+      {
+        id: 1,
+        title: "TO DO",
+        cards: [],
+      },
+      {
+        id: 2,
+        title: "В ПРОЦЕССЕ",
+        cards: [],
+      },
+      {
+        id: 3,
+        title: "В АНАЛИЗЕ",
+        cards: [],
+      },
+      {
+        id: 4,
+        title: "DONE",
+        cards: [],
+      },
+    ]
   );
 
+  const history = useHistory();
   const [targetCard, setTargetCard] = useState({
     bid: "",
     cid: "",
   });
-
-  const addboardHandler = (name) => {
-    const tempBoards = [...boards];
-    tempBoards.push({
-      id: Date.now() + Math.random() * 2,
-      title: name,
-      cards: [],
-    });
-    setBoards(tempBoards);
-  };
-
-  const removeBoard = (id) => {
-    const index = boards.findIndex((item) => item.id === id);
-    if (index < 0) return;
-
-    const tempBoards = [...boards];
-    tempBoards.splice(index, 1);
-    setBoards(tempBoards);
-  };
 
   const addCardHandler = (id, title) => {
     const index = boards.findIndex((item) => item.id === id);
@@ -40,6 +44,7 @@ export default function App() {
     tempBoards[index].cards.push({
       id: Date.now() + Math.random() * 2,
       title,
+      desc: "",
       labels: [],
       date: "",
       tasks: [],
@@ -110,7 +115,6 @@ export default function App() {
     if (cardIndex < 0) return;
 
     tempBoards[index].cards[cardIndex] = card;
-
     setBoards(tempBoards);
   };
 
@@ -121,7 +125,28 @@ export default function App() {
   return (
     <div className="app">
       <div className="app_nav">
-        <h1>Kanban Board</h1>
+        <ul className="navigation">
+          <li>
+            <button className="nav__btn" onClick={() => history.push("/")}>
+              <img src="/logo.png" alt="logo" className="logo" />
+            </button>
+          </li>
+          <li>
+            <button className="nav__btn" onClick={() => history.push("/")}>
+              Домой
+            </button>
+          </li>
+          <li>
+            <button className="nav__btn" onClick={() => history.push("/projects")}>
+              Проекты
+            </button>
+          </li>
+          <li>
+            <button className="nav__btn" onClick={() => history.push("/tasks")}>
+              Мои задачи
+            </button>
+          </li>
+        </ul>
       </div>
       <div className="app_boards_container">
         <div className="app_boards">
@@ -130,25 +155,28 @@ export default function App() {
               key={item.id}
               board={item}
               addCard={addCardHandler}
-              removeBoard={() => removeBoard(item.id)}
               removeCard={removeCard}
               dragEnded={dragEnded}
               dragEntered={dragEntered}
               updateCard={updateCard}
             />
           ))}
-          <div className="app_boards_last">
-            <Editable
-              displayClass="app_boards_add-board"
-              editClass="app_boards_add-board_edit"
-              placeholder="Enter Board Name"
-              text="Add Board"
-              buttonText="Add Board"
-              onSubmit={addboardHandler}
-            />
-          </div>
         </div>
       </div>
     </div>
   );
 }
+
+function App() {
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/tasks" component={KanbanApp} />
+        <Route path="/projects" render={() => <div>Страница проектов</div>} />
+      </Switch>
+    </Router>
+  );
+}
+
+export default App;

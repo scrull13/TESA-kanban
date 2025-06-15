@@ -114,11 +114,38 @@
   text-decoration-line: line-through;
 }
 
-.cardinfo_box input[type="date"] {
-  width: fit-content;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  outline: none;
-  font-size: 1rem;
-  padding: 10px;
+.cardinfo_date_container {
+  display: flex;
+  flex-direction: column;
 }
+
+.cardinfo_date_input_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cardinfo_date_label {
+  background: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* Для input date */
+input[type="date"] {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.board_cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Добавляет промежуток между карточками */
+}
+
+/* Стиль для каждой карточки */
+

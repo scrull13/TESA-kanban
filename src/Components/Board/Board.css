@@ -1,11 +1,11 @@
 .board {
-  min-width: 290px;
-  width: 290px;
+  width: 350px;
   max-height: 100%;
-  flex-basis: 290px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  border: 1px solid  #f8f8f8;
+  border-radius: 8px;
+  background-color: #F5F5F5;
 }
 
 .board_header {
@@ -48,7 +48,6 @@
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   overflow-y: auto;
 }
 
